@@ -1,0 +1,20 @@
+# https://app.vagrantup.com/boxes/search
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "mattglass/metasploitable2-PS"
+  config.vm.box_version = "0.0.1"
+end
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "RobertoD91/metasploitable3-win2k8"
+end
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "RobertoD91/metasploitable3-ub1404"
+  config.vm.box_version = "1.0.0"
+end
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "voidead/win-xp-sp1"
+  config.vm.box_version = "1.0"
+end
