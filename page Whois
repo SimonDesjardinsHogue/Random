@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function whois_module_menu() {
+  $items['whois'] = array(
+    'title' => 'Whois',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('whois_module_form'),
+    'access arguments' => array('access content'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Whois form.
+ */
+function whois_module_form($form, &$form_state) {
+  $form['ip'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Adresse IP'),
+    '#required' => TRUE,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Rechercher'),
+  );
+  return $form;
+}
+
+/**
+ * Whois form submit handler.
+ */
+function whois_module_form_submit($form, &$form_state) {
+  $ip = $form_state['values']['ip'];
+  $result = shell_exec("whois $ip");
+  drupal_set_message("<pre>$result</pre>", 'status');
+}
+
