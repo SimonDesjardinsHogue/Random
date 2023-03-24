@@ -1,0 +1,119 @@
+import random
+
+# Définir une classe pour le joueur
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.health = 100
+        self.attack = 10
+        self.defense = 5
+        self.xp = 0
+        self.level = 1
+        self.gold = 0
+
+    # Fonction pour afficher les statistiques du joueur
+    def stats(self):
+        print(f"Nom : {self.name}")
+        print(f"Santé : {self.health}")
+        print(f"Attaque : {self.attack}")
+        print(f"Défense : {self.defense}")
+        print(f"XP : {self.xp}")
+        print(f"Niveau : {self.level}")
+        print(f"Or : {self.gold}")
+
+    # Fonction pour attaquer un monstre
+    def attack_monster(self, monster):
+        damage = self.attack - monster.defense
+        if damage < 0:
+            damage = 0
+        monster.health -= damage
+        print(f"Vous attaquez {monster.name} pour {damage} points de dégâts.")
+        if monster.health <= 0:
+            print(f"Vous avez vaincu {monster.name} !")
+            self.xp += monster.xp_reward
+            self.gold += monster.gold_reward
+
+    # Fonction pour se reposer et récupérer de la santé
+    def rest(self):
+        print("Vous vous reposez et récupérez votre santé.")
+        self.health = 100
+
+    # Fonction pour gagner de l'XP et passer un niveau
+    def gain_xp(self, xp):
+        self.xp += xp
+        if self.xp >= self.level * 10:
+            self.level += 1
+            self.attack += 2
+            self.defense += 1
+            self.health = 100
+            print("Vous avez passé un niveau !")
+
+# Définir une classe pour un monstre
+class Monster:
+    def __init__(self, name, health, attack, defense, xp_reward, gold_reward):
+        self.name = name
+        self.health = health
+        self.attack = attack
+        self.defense = defense
+        self.xp_reward = xp_reward
+        self.gold_reward = gold_reward
+
+    # Fonction pour attaquer le joueur
+    def attack_player(self, player):
+        damage = self.attack - player.defense
+        if damage < 0:
+            damage = 0
+        player.health -= damage
+        print(f"{self.name} vous attaque pour {damage} points de dégâts.")
+        if player.health <= 0:
+            print("Vous êtes mort !")
+
+# Définir une fonction pour créer un monstre aléatoire
+def create_monster():
+    monsters = [
+        Monster("Goblin", 30, 8, 2, 5, 10),
+        Monster("Orc", 40, 10, 5, 10, 20),
+        Monster("Dragon", 100, 20, 10, 50, 100)
+    ]
+    return random.choice(monsters)
+
+# Code principal du jeu
+player_name = input("Entrez votre nom de joueur : ")
+player = Player(player_name)
+
+while True:
+    print("Que voulez-vous faire ?")
+    print("1. Afficher les statistiques du joueur")
+    print("2. Attaquer un monstre")
+    print("3. Se reposer")
+    
+ choice = input("Entrez votre choix : ")
+
+if choice == "1":
+    player.stats()
+elif choice == "2":
+    monster = create_monster()
+    print(f"Vous rencontrez un {monster.name} !")
+    while True:
+        print(f"Que voulez-vous faire ?")
+        print(f"1. Attaquer le {monster.name}")
+        print("2. Fuir")
+        choice = input("Entrez votre choix : ")
+        if choice == "1":
+            player.attack_monster(monster)
+            if monster.health <= 0:
+                break
+            monster.attack_player(player)
+        elif choice == "2":
+            print("Vous fuyez le combat.")
+            break
+        else:
+            print("Choix invalide.")
+elif choice == "3":
+    player.rest()
+else:
+    print("Choix invalide.")
+
+
+Ce code crée une classe `Player` pour représenter le joueur avec des attributs comme la santé, l'attaque et la défense, ainsi que des fonctions pour attaquer un monstre, se reposer et gagner de l'XP. Il crée également une classe `Monster` pour représenter les monstres avec des attributs similaires, ainsi qu'une fonction pour créer un monstre aléatoire. Enfin, le code principal du jeu demande au joueur ce qu'il veut faire et appelle les fonctions appropriées en fonction de ses choix. Bien sûr, il y a beaucoup d'améliorations que vous pourriez apporter à ce code, mais cela devrait vous donner une idée de par où commencer.
+
